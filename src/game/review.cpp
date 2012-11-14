@@ -41,6 +41,156 @@ void DrawReview(char plr);
 void PresPict(char poff);
 void DrawRevText(char plr, int val);
 
+struct mission_review_t {
+    const char * Country;
+    const char * Text;
+} mission_review[] = {
+    {
+        .Country = "US",
+        .Text = "THE PRESIDENT IS DEEPLY CONCERNED WITH\nRECENT SETBACKS AND IS MONITORING THE\nSITUATION.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE PRESIDENT AWARDS YOU A CITATION FOR\nEXCELLENCE IN LEADERSHIP AND MANAGEMENT\nOF THE SPACE PROGRAM.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE PRESIDENT PRAISES YOU HIGHLY FOR A\nCOMMANDING LEAD IN THE SPACE RACE.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE PRESIDENT OFFERS HIGH PRAISE FOR YOUR\nSOUND JUDGEMENT AND ACCOMPLISHMENTS.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE PRESIDENT IS PLEASED BY THE SOLID\nACCOMPLISHMENTS THAT HAVE GIVEN THE UNITED\nSTATES A COMMANDING LEAD IN THE EXPLORATION\nOF SPACE.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE VICE PRESIDENT COMPLIMENTS THE OVERALL\nRESULTS THAT HAVE GIVEN THE UNITED STATES A\nSTRONG LEAD.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE VICE PRESIDENT IS PLEASED THAT GOALS HAVE\nBEEN MET AND SCHEDULES ARE BEING MAINTAINED.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE VICE PRESIDENT ACKNOWLEDGES THE MINIMAL\nRESULTS THUS FAR, AND URGES GREATER ACHIEVEMENTS\nTO TAKE THE LEAD.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE VICE PRESIDENT REQUESTS THAT CLEAR GOALS\nBE ESTABLISHED AND MET.     ",
+    },
+    {
+        .Country = "US",
+        .Text = "THE VICE PRESIDENT WANTS RESULTS AND STATES\nTHAT PRIORITIES HAD BETTER BE ESTABLISHED.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE VICE PRESIDENT STRONGLY URGES STRICTER\nMEASURES AND WILL CLOSELY MONITOR THE SITUATION.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE PRESIDENT QUESTIONS SOME GUIDELINES, AND\nSTRONGLY URGES A CHANGEOVER IN PRIORITIES.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE PRESIDENT IS NOT PLEASED WITH FAILURES, AND\nWARNS THAT CHANGES MUST BE MADE SOON.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE PRESIDENT IS CONCERNED WITH THE FAILURE TO\nMEET GOALS AND IS GOING TO EVALUATE YOUR STRATEGY.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE PRESIDENT QUESTIONS SOME OF YOUR DECISIONS\nAND WONDERS IF THE UNITED STATES CAN REGAIN\nTHE LEAD.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE PRESIDENT IS UPSET WITH GROSS ERRORS IN\nJUDGEMENT AND WARNS THAT RESULTS HAD BETTER\nCOME QUICKLY.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE PRESIDENT IS VERY DISAPPOINTED WITH YOUR\nLACK OF PROGRESS IN ALL AREAS OF THE SPACE\nPROGRAM. YOU'RE FIRED.",
+    },
+    {
+        .Country = "US",
+        .Text = "THE PRESIDENT IS VERY DISAPPOINTED WITH YOUR\nDISREGARD FOR SAFETY AND WILL TENDER YOUR\nRESIGNATION. YOU'RE FIRED.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE SECRETARY GENERAL IS VERY IRRITATED BY THESE\nSETBACKS AND IS GOING TO CLOSELY WATCH YOUR\nPROGRESS.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE SECRETARY GENERAL AWARDS YOU THE CITIZEN'S\nMEDAL FIRST CLASS OF THE SUPREME SOVIET FOR HEROIC\nBRAVERY AND LEADERSHIP IN THE DOMINATION OF SPACE.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE SECRETARY GENERAL AWARDS YOU A SEASIDE DACHA\nFOR YOUR SUPERB LEADERSHIP.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE SECRETARY GENERAL SPEAKS HIGHLY OF YOU AND\nTHE GLORIOUS ACCOMPLISHMENTS OF THE SUPERIOR\nSOVIET SPACE PROGRAM AT THE GENERAL ASSEMBLY.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE SECRETARY GENERAL IS PLEASED THAT THE SOVIET\nUNION HAS A COMMANDING LEAD IN THE CONQUEST OF\nSPACE.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE POLITBURO IS PLEASED THAT THE SOVIET UNION\nHAS A STRONG LEAD IN SPACE EXPLORATION.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE POLITBURO IS SATISFIED THAT GOALS HAVE BEEN\nMET AND SCHEDULES ARE BEING MAINTAINED.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE POLITBURO WOULD LIKE TO SEE GREATER RESULTS\nIN ORDER TO HAVE A COMMANDING LEAD IN THE\nSPACE RACE.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE POLITBURO HAS HIGH EXPECTATIONS AND REQUIRES\nTHAT THEY BE ACHIEVED.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE POLITBURO IS A LITTLE IMPATIENT AND EXPECTS\nGREATER ACHIEVEMENTS AND GLORY IN THE CONQUEST\nOF SPACE.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE POLITBURO IS RESTLESS AND DEMANDS GREAT\nACHIEVEMENTS IN THE CONQUEST OF SPACE.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE POLITBURO DEMANDS THAT STRICTER MEASURES BE\nTAKEN. THEY ARE CLOSELY MONITORING YOUR\nPERFORMANCE.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE SECRETARY GENERAL QUESTIONS SOME OF YOUR\nGUIDELINES AND DEMANDS RESULTS, QUICKLY.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE SECRETARY GENERAL IS GROWING IMPATIENT WITH\nYOUR MANAGEMENT OF THE SPACE PROGRAM.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE SECRETARY GENERAL HAS ORDERED THE KGB TO\nINVESTIGATE YOUR BACKGROUND. HE IS VERY TIRED\nWITH THE LACK OF PROGRESS IN THE SPACE PROGRAM.  ",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE SECRETARY GENERAL IS VERY ANGRY WITH FAILURES\nOF THE SPACE PROGRAM. HE QUESTIONS YOUR LOYALTY.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE SECRETARY GENERAL IS DISGUSTED WITH YOUR\nDISHONESTY AND INCOMPETENCE. YOU'VE LOST ALL YOUR\nTITLES AND POSSESSIONS. AFTER YOUR ARREST BY THE\nKGB, YOU'RE SENT TO SIBERIA FOR 'RE-EDUCATION'.",
+    },
+    {
+        .Country = "SOV",
+        .Text = "THE SECRETARY GENERAL IS DISGUSTED WITH YOUR\nDISHONESTY AND INCOMPETENCE. YOU'VE LOST ALL YOUR\nTITLES AND POSSESSIONS. AFTER YOUR ARREST BY THE\nKGB, YOU'RE SENT TO SIBERIA FOR 'RE-EDUCATION'.",
+    },
+};
+
 
 void DrawReview(char plr)
 {
@@ -365,30 +515,23 @@ void CalcPresRev(void)
 
 void DrawRevText(char plr, int val)
 {
-    int index = 0, length, line = 0;
-    FILE *fin;
-    memset(buffer, 0x00, 10000);
-    fin = sOpen("P_REV.DAT", "rb", 0);  // Read Mission Structure
-    fseek(fin, 204 * 18 * plr + 204 * val, SEEK_SET);
-    fread(buffer, 204, 1, fin);
-    fclose(fin);
+    
+    // Read Mission Structure
+    const char * review_text = mission_review[18 * plr + val].Text;
 
 	display::graphics.setForegroundColor(1);
 
     grMoveTo(20, 140);
 
-    do {
-        if (buffer[index] == '*') {
-            length = 0;
-            index++;
+    int line = 0;
+    for (int i = 0; review_text[i]; i++) {
+        if (review_text[i] == '\n') {
             line++;
             grMoveTo(20, 140 + 12 * line);
+        } else {
+            DispChr(review_text[i]);
         }
-
-        DispChr(buffer[index]);
-        length++;
-        index++;
-    } while (buffer[index] != 0);
+    }
 }
 
 
