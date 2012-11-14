@@ -814,13 +814,9 @@ void VAB(char plr)
 {
     int i, j, j2, mis, sf[8], qty[8], wgt, pay[8], tmp, ccc, rk, cwt, ab, ac;
     char Name[8][12], ButOn, temp;
-    FILE *file;
     int MI_size = sizeof(struct MDA) * 28 * 2;
-
-
-    file = sOpen("VTABLE.DAT", "rb", 0);
-    fread(MI, MI_size, 1, file);
-    fclose(file);
+    
+    Filesystem::readToBuffer("gamedata/VTABLE.DAT", MI, MI_size);
 
     // Endianness swap
     for (i = 0; i < 2 * 28; i++) {
