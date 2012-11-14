@@ -24,6 +24,7 @@
 //
 
 #include "display/graphics.h"
+#include "display/png_image.h"
 
 #include "port.h"
 #include "Buzz_inc.h"
@@ -49,6 +50,7 @@
 #include "gx.h"
 #include "pace.h"
 #include "endianness.h"
+#include "filesystem.h"
 
 #define LET_A   0x09
 #define LET_M   0x0A
@@ -517,14 +519,9 @@ void PortPlace(FILE *fin, int32_t table)
 
 void PortPal(char plr)
 {
-    FILE *fin;
-    fin = sOpen((plr == 0) ? "USA_PORT.DAT" : "SOV_PORT.DAT", "rb", 0);
-    fread(&PHead, sizeof PHead, 1, fin);
-    Swap32bit(PHead.oPal);
-    fseek(fin, PHead.oPal, SEEK_SET);
-    fread(display::graphics.palette(), 768, 1, fin);
-    fclose(fin);
-    return;
+    const char * image_name = (plr == 0) ? "images/usa_port.dat.0.png" : "images/sov_port.dat.0.png";
+    boost::shared_ptr<display::PNGImage> image(Filesystem::readImage(image_name));
+    image->export_to_legacy_palette();
 }
 
 
