@@ -127,7 +127,7 @@ boost::shared_ptr<File> Filesystem::openWrite(const std::string& filename)
     return file_ptr;
 }
 
-void Filesystem::readToBuffer(const std::string& filename, void *buffer, uint32_t length, uint32_t offset)
+uint32_t Filesystem::readToBuffer(const std::string& filename, void *buffer, uint32_t length, uint32_t offset)
 {
     boost::shared_ptr<File> file_ptr(open(filename));
     
@@ -135,8 +135,7 @@ void Filesystem::readToBuffer(const std::string& filename, void *buffer, uint32_
         file_ptr->seek(offset);
 
     uint32_t bytes_read = file_ptr->read(buffer, length);
-    if (bytes_read < length)
-        throw_error;
+    return bytes_read;
 }
 
 boost::shared_ptr<display::PNGImage> Filesystem::readImage(const std::string& filename)
