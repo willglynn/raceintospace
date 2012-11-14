@@ -34,6 +34,7 @@
 #include "gr.h"
 #include "gx.h"
 #include "pace.h"
+#include "filesystem.h"
 
 // Function Prototype
 
@@ -118,14 +119,15 @@ void SetRush(int mode, int val);
 void DrawRush(char plr)
 {
     int i, k = 0, l = 0, JR = 0;
-    FILE *fin;
 
     FadeOut(2, display::graphics.palette(), 10, 0, 0);
 
-    fin = sOpen("LPADS.BUT", "rb", 0);
-    i = fread(display::graphics.screen(), 1, MAX_X * MAX_Y, fin);
-    fclose(fin);
-    RLED_img(display::graphics.screen(), vhptr.vptr, i, vhptr.w, vhptr.h);
+    {
+        char buffer[MAX_X * MAX_Y];
+        int bytes = Filesystem::readToBuffer("gamedata/LPADS.BUT", buffer, sizeof(buffer));
+        RLED_img(buffer, vhptr.vptr, bytes, vhptr.w, vhptr.h);
+    }
+
     gxClearDisplay(0, 0);
     JR = 0;
 
