@@ -22,6 +22,7 @@
 #include "display/graphics.h"
 
 #include "place.h"
+#include "filesystem.h"
 #include "gamedata.h"
 #include "Buzz_inc.h"
 #include "utils.h"
@@ -66,12 +67,9 @@ int MainMenuChoice()
     int selected_option = -1;
 
     {
-        FILE *fp = sOpen("main_menu.png", "rb", FT_IMAGE);
-        display::PNGImage image(fp);
-        fclose(fp);
-
-        image.export_to_legacy_palette();
-        image.draw();
+        boost::shared_ptr<display::PNGImage> image(Filesystem::readImage("images/main_menu.png"));
+        image->export_to_legacy_palette();
+        image->draw();
     }
 
     for (int i = 0; i < menu_option_count; i++) {
