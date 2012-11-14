@@ -9,6 +9,7 @@
 #include "sdlhelper.h"
 #include "pace.h"
 #include "display/graphics.h"
+#include "filesystem.h"
 
 enum vertical_alignment {
     ALIGN_TOP,
@@ -76,12 +77,11 @@ void display_text_in_box(int x, int y, int width, int height, const std::string 
 
 void pretty_crash(const std::string &title, const std::string &message)
 {
-    FILE *fp = sOpen("error.png", "rb", FT_IMAGE);
-    display::PNGImage image(fp);
-    fclose(fp);
-
-    image.export_to_legacy_palette();
-    image.draw();
+    {
+        boost::shared_ptr<display::PNGImage> image(Filesystem::readImage("images/error.png"));
+        image->export_to_legacy_palette();
+        image->draw();
+    }
 
     display::graphics.setForegroundColor(8);
     display_text_in_box(190, 20, 120, 20, "MASTER ALARM!");

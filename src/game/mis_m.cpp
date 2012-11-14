@@ -36,6 +36,7 @@
 #include "gr.h"
 #include "pace.h"
 #include "endianness.h"
+#include "filesystem.h"
 
 LOG_DEFAULT_CATEGORY(mission)
 
@@ -67,7 +68,6 @@ void GetFailStat(struct XFails *Now, char *FName, int rnum)
 {
     DEBUG2("->GetFailStat(struct XFails *Now,char *FName,int rnum %d)", rnum);
     int i;
-    FILE *fin;
     int32_t count;
     struct Fdt {
         char Code[6];
@@ -75,38 +75,37 @@ void GetFailStat(struct XFails *Now, char *FName, int rnum)
         int16_t size;
     } Pul;
 
-    fin = sOpen("FAILS.CDR", "rb", 0);
+    boost::shared_ptr<File> fin(Filesystem::open("fails.cdr"));
     count = 44;
-    fread(&count, sizeof count, 1, fin); // never written to file
+    fin->read(&count, sizeof(count));
     Swap32bit(count);
-    fread(&Pul, sizeof Pul, 1, fin);
+    fin->read(&Pul, sizeof(Pul));
     Swap32bit(Pul.offset);
     Swap16bit(Pul.size);
     i = 0;
 
     while (xstrncasecmp(Pul.Code, FName, 4) != 0 && i < count) {
-        fread(&Pul, sizeof Pul, 1, fin);
+        fin->read(&Pul, sizeof(Pul));
         Swap32bit(Pul.offset);
         Swap16bit(Pul.size);
         i++;
     }
 
     if (i == count) {
-        fclose(fin);
         return;
     }
 
-    fseek(fin, Pul.offset, SEEK_SET);
+    fin->seek(Pul.offset);
 
     if (rnum < 0) { // Unmanned portion
         do {
-            fread(Now, sizeof(struct XFails), 1, fin);
+            fin->read(Now, sizeof(Now));
             Swap32bit(Now->per);    // Only need to swap this one since we're checking only that
 
         } while (Now->per != rnum);
     } else {
         do {
-            fread(Now, sizeof(struct XFails), 1, fin);
+            fin->read(Now, sizeof(Now));
             Swap32bit(Now->per);
             Swap16bit(Now->code);
             Swap16bit(Now->val);
@@ -114,8 +113,6 @@ void GetFailStat(struct XFails *Now, char *FName, int rnum)
             Swap16bit(Now->fail);
         } while (Now->per <= rnum);
     };
-
-    fclose(fin);
 
     DEBUG1("<-GetFailStat()");
 }

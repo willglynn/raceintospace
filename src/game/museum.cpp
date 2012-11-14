@@ -42,6 +42,7 @@
 #include "gx.h"
 #include "pace.h"
 #include "endianness.h"
+#include "filesystem.h"
 
 struct Astros *abuf;
 
@@ -108,12 +109,12 @@ void Display_ARROW(char num, int x, int y)
     /* Look for explanations in place.c:PatchMe() */
     PatchHdrSmall P;
     GXHEADER local, local2;
-    FILE *in;
-    in = sOpen("ARROWS.BUT", "rb", 0);
-    fseek(in, (num) * (sizeof P), SEEK_CUR);
-    fread(&P, sizeof P, 1, in);
+    
+    boost::shared_ptr<File> in(Filesystem::open("gamedata/arrows.but"));
+    in->seek(num * sizeof(P));
+    in->read(&P, sizeof(P));
     SwapPatchHdrSmall(&P);
-    fseek(in, P.offset, SEEK_SET);
+    in->seek(P.offset);
 
     if (P.w * P.h != P.size) {
         /* fprintf(stderr,
@@ -130,14 +131,12 @@ void Display_ARROW(char num, int x, int y)
     GV(&local, P.w, P.h);
     GV(&local2, P.w, P.h);
     gxGetImage(&local2, x, y, x + P.w - 1, y + P.h - 1, 0);
-    fread(local.vptr, P.size, 1, in);
-    fclose(in);
+    in->read(local.vptr, P.size);
 // for (j=0;j<P.size;j++)
 //   if(local.vptr[j]!=0) local2.vptr[j]=local.vptr[j];
     gxPutImage(&local, gxSET, x, y, 0);
     DV(&local);
     DV(&local2);
-    return;
 }
 
 void Museum(char plr)

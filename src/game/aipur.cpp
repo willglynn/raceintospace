@@ -40,6 +40,7 @@
 #include "gr.h"
 #include "gx.h"
 #include "pace.h"
+#include "filesystem.h"
 
 struct ManPool *Men;
 char AIsel[25];
@@ -58,7 +59,6 @@ void DrawStatistics(char Win)
     char AImg[7] = {8, 9, 10, 11, 13, 14, 0};
     char Digit[2];
     int starty, qty, i;
-    FILE *fin;
     helpText = "i145";
     keyHelpText = "k045";
     FadeOut(2, display::graphics.palette(), 10, 0, 0);
@@ -106,7 +106,8 @@ void DrawStatistics(char Win)
     qty = 6;
     starty = 118;
     GV(&local, 30, 19);
-    fin = sOpen("PORTBUT.BUT", "rb", 0);
+    
+    boost::shared_ptr<File> fin(Filesystem::open("images/portbut.but"));
     OutBox(152, 41, 183, 61); //directors ranking
 
     for (i = 0; i < qty; i++) {
@@ -118,8 +119,8 @@ void DrawStatistics(char Win)
             OutBox(starty + (i * 33), 132, 31 + starty + (i * 33), 152);
         }
 
-        fseek(fin, AImg[i] * 570, SEEK_SET);
-        fread((char *)local.vptr, 570, 1, fin);
+        fin->seek(AImg[i] * 570);
+        fin->read(local.vptr, 570);
 
         if (i == 0) {
             gxPutImage(&local, gxSET, 153, 42, 0);
@@ -134,11 +135,8 @@ void DrawStatistics(char Win)
         }
     }
 
-    fclose(fin);
     DV(&local);
     FadeIn(2, display::graphics.palette(), 10, 0, 0);
-
-    return;
 }
 
 void Stat(char Win)

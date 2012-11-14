@@ -41,6 +41,7 @@
 #include "gx.h"
 #include "pace.h"
 #include "endianness.h"
+#include "filesystem.h"
 
 Equipment *MH[2][8];   // Pointer to the hardware
 struct MisAst MA[2][4];  //[2][4]
@@ -80,25 +81,13 @@ int MaxFailPad(char which);
 
 void DrawControl(char plr)
 {
-    FILE *fin;
-    int32_t len;
-    fin = sOpen("CONTROL.IMG", "rb", 0);
-    fread(display::graphics.palette(), 768, 1, fin);
-    fread(&len, 4, 1, fin);
-    Swap32bit(len);
+    const char * filename = (plr == 0) ? "images/control.img.0.png" : "images/control.img.1.png";
+    boost::shared_ptr<display::PNGImage> image(Filesystem::readImage(filename));
 
-    if (plr == 1) {
-        fseek(fin, len, SEEK_CUR);
-        fread(display::graphics.palette(), 768, 1, fin);
-        fread(&len, 4, 1, fin);
-        Swap32bit(len);
-    }
-
-    fread(vhptr.vptr, len, 1, fin);
-    fclose(fin);
-    PCX_D((char *)vhptr.vptr, display::graphics.screen(), (unsigned) len);
+    image->export_to_legacy_palette();
+    image->draw();
+    
     av_need_update_xy(0, 0, MAX_X, MAX_Y);
-
 }
 
 void SetW(char ch)
