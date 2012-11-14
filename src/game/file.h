@@ -12,6 +12,7 @@ public:
     void close();
     
     int64_t read(void * buffer, uint64_t length);
+    uint16_t read_uint16_t();
     
     int64_t write(const void * buffer, uint64_t length);
     void flush();

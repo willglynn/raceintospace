@@ -46,6 +46,13 @@ int64_t File::read(void * buffer, uint64_t length)
     return result;
 }
 
+uint16_t File::read_uint16_t()
+{
+    uint16_t val;
+    PHYSFS_readULE16(m_phys_handle, &val);
+    return val;
+}
+
 int64_t File::write(const void * buffer, uint64_t length)
 {
     int64_t result = PHYSFS_writeBytes(m_phys_handle, buffer, length);
