@@ -46,6 +46,7 @@
 #include "gx.h"
 #include "pace.h"
 #include "endianness.h"
+#include "filesystem.h"
 
 struct VInfo VAS[7][4];
 int VASqty;
@@ -161,7 +162,6 @@ void GradRect2(int x1, int y1, int x2, int y2, char plr)
 
 void DispVAB(char plr, char pad)
 {
-    FILE *fp = NULL;
     uint16_t image_len = 0;
 
     helpText = "i016";
@@ -169,18 +169,19 @@ void DispVAB(char plr, char pad)
 
     FadeOut(2, display::graphics.palette(), 10, 0, 0);
 
-    fp = sOpen("VAB.IMG", "rb", 0);
-    fread(display::graphics.palette(), 768, 1, fp);
-    fread_uint16_t(&image_len, 1, fp);
-
-    if (plr == 1) {
-        fseek(fp, image_len, SEEK_CUR);
-        fread(display::graphics.palette(), 768, 1, fp);
-        fread_uint16_t(&image_len, 1, fp);
+    {
+        boost::shared_ptr<File> fp(Filesystem::open("gamedata/VAB.IMG"));
+        fp->read(display::graphics.palette(), 768);
+        image_len = fp->read_uint16_t();
+        
+        if (plr == 1) {
+            fp->seek(image_len + 768 + 2);
+            fp->read(display::graphics.palette(), 768);
+            image_len = fp->read_uint16_t();
+        }
+        
+        fp->read(display::graphics.screen(), image_len);
     }
-
-    fread(display::graphics.screen(), image_len, 1, fp);
-    fclose(fp);
 
     PCX_D(display::graphics.screen(), vhptr.vptr, image_len);
 
